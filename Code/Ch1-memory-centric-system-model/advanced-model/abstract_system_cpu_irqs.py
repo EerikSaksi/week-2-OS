@@ -2,8 +2,10 @@
 from abstract_system_constants import *
 def checkIrqs(registers,ivt,irqs):
     idx=0
+    foundInterrupt = False
     for irq in irqs:
         if irq :
+            foundInterrupt = True
             #print("IRQ ",idx," raised!")
             # Clear the WFI status 
             registers[SCR] = 0
@@ -14,5 +16,7 @@ def checkIrqs(registers,ivt,irqs):
             irqs[idx]=False
             break
         idx+=1        
+    if not foundInterrupt: 
+        registers[SCR] = 1
     return (registers,irqs)
 
