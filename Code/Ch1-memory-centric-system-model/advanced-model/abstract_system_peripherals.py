@@ -23,7 +23,7 @@ def timerAction(timerState):
         timerState[0]-=1
     timerIrq=False
     if timerState[0]==0:
-        timerIrq=True
+        timerIrq = True
         timerState[0]=timerState[1]
     return (timerState,timerIrq)
 

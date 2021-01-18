@@ -1,4 +1,8 @@
-systemStateSz=0x1000000 # 16MB
+PID = 0
+NTASKS = 3
+TCB_SZ = 1024
+TCB_OFFSET = 0x1000000
+systemStateSz=0x1000000 + NTASKS * TCB_SZ # 16MB
 timerStateSz=0x10 # 16
 kbdStateSz=0x100 # 256B
 nicStateSz=0x1000 # 4KB
