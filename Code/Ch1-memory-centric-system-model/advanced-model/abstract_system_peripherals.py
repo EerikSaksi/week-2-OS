@@ -31,7 +31,7 @@ def dmaAction(systemState):
     dmaIrq=0
     # DMA is the start of the address space
     # DCR values: 1 = do transfer, 0 = idle
-    if  systemState[DMA+DCR]!=0:
+    if systemState[DMA+DCR]!=0:
         if systemState[DMA+DCO]!=0:
             ctr = systemState[DMA+DCO]
             to_addr = systemState[DMA+DDR]+ctr

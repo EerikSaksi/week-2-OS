@@ -20,7 +20,7 @@ def main():
 #    global alu
 
 # Default settings
-    PERIPHERALS=False
+    PERIPHERALS=True
     HL=False
     PRINT_CYCLES=False
 
@@ -69,13 +69,12 @@ def main():
     systemState=np.zeros( systemStateSz,dtype=np.uint64 ) 
 
     timerState=np.zeros( timerStateSz,dtype=np.uint64 )
-    timerState[0]=MAX_NCYCLES+1
-    timerState[1]=MAX_NCYCLES+1
+    timerState[0]=1 
+    timerState[1]=2 
     kbdState=np.zeros( kbdStateSz,dtype=np.uint64 )
     nicState=np.zeros( nicStateSz,dtype=np.uint64 )
     ssdState=np.zeros( ssdStateSz,dtype=np.uint64 )
     gpuState=np.zeros( gpuStateSz,dtype=np.uint64 )
-    dmaState=np.zeros( dmaStateSz,dtype=np.uint64 )
     ramState=np.zeros( ramStateSz,dtype=np.uint64 )
 
 # Initialise the registers
@@ -89,7 +88,7 @@ def main():
     (ramState,cfg) = load_code(ramState,cfg)
 
     #systemState = ramState+timerState+kbdState+nicState+ssdState+gpuState
-    systemState = np.concatenate((ramState,timerState,kbdState,nicState,ssdState,gpuState,dmaState))
+    systemState = np.concatenate((ramState,timerState,kbdState,nicState,ssdState,gpuState))
 
     for ncycles in range(0,MAX_NCYCLES):
             if PRINT_CYCLES:
@@ -100,15 +99,12 @@ def main():
                 (ssdState,ssdIrq)=ssdAction(ssdState)
                 (gpuState,gpuIrq)=gpuAction(gpuState)
                 (timerState,timerIrq)=timerAction(timerState)
-
-                (systemState,dmaIrq) = dmaAction(systemState)
-                
                 ramState=systemState[0:MEMTOP]
-
-                irqs=[kbdIrq,nicIrq,ssdIrq,gpuIrq,timerIrq,dmaIrq]
+                irqs=[kbdIrq,nicIrq,ssdIrq,gpuIrq,timerIrq]
+                print(irqs)
                 
 #                systemState = ramState+timerState+kbdState+nicState+ssdState+gpuState # without numpy
-                systemState = np.concatenate((ramState,timerState,kbdState,nicState,ssdState,gpuState,dmaState))
+                systemState = np.concatenate((ramState,timerState,kbdState,nicState,ssdState,gpuState))
             else:
                 irqs=[]
 #            print( systemState[CODE:CODE+20] )

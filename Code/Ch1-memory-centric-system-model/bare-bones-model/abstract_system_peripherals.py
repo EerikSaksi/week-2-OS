@@ -17,5 +17,8 @@ def gpuAction(gpuState):
     return gpuState
 
 def timerAction(timerState):
-    timerIrq=False
-    return timerState
+    timerState[0] += 1 
+    timerIrq = False
+    if timerState[0] == 2: 
+        timerIrq = True
+    return (timerState, timerIrq)
